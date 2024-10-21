@@ -28,8 +28,8 @@ jobs:
         run: |
           pwd
           ls -al
-          ls -al ./repo
-          find ./repo -name "pom.xml"
+          ls -al ./HelloWorldApp
+          find ./HelloWorldApp -name "pom.xml"
 
   install-maven:
     name: Install Maven
@@ -67,11 +67,11 @@ jobs:
       - name: Verify Directory Contents
         run: |
           pwd
-          ls -al ./repo
-          find ./repo -name "pom.xml"
+          ls -al ./HelloWorldApp
+          find ./HelloWorldApp -name "pom.xml"
 
       - name: SonarCloud Scan
-        working-directory: ./repo
+        working-directory: ./HelloWorldApp
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
@@ -105,9 +105,9 @@ jobs:
       - name: Verify Directory Contents
         run: |
           pwd
-          ls -al ./repo
-          find ./repo -name "pom.xml"
+          ls -al ./HelloWorldApp
+          find ./HelloWorldApp -name "pom.xml"
 
       - name: Build with Maven
-        working-directory: ./repo
+        working-directory: ./HelloWorldApp
         run: mvn clean install
