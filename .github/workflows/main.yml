@@ -41,7 +41,7 @@ jobs:
     name: SonarQube Analysis
     runs-on: ubuntu-latest
     needs: install-maven
-    timeout-minutes: 15
+    timeout-minutes: 20
     services:
       sonarqube:
         image: sonarqube:community:9.9.1
@@ -49,11 +49,11 @@ jobs:
           - 9000:9000
         options: >-
           --health-cmd="curl -s http://localhost:9000/api/system/health | grep -q UP"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=50
-          --cpus=2
-          --memory=2g
+          --health-interval=15s
+          --health-timeout=10s
+          --health-retries=60
+          --cpus=3
+          --memory=4g
           -v /tmp/sonarqube_logs:/opt/sonarqube/logs
     steps:
       - name: Checkout Code
@@ -73,11 +73,20 @@ jobs:
       - name: Wait for SonarQube to be ready
         run: sleep 60
 
-      - name: List Running Containers and Status (Debug)
+      - name: List All Containers (Debug)
+        if: failure()
+        run: docker ps -a
+
+      - name: Inspect SonarQube Container (Debug)
         if: failure()
         run: |
-          docker ps -a
-          docker inspect $(docker ps -aq --filter "ancestor=sonarqube:community:9.9.1")
+          CONTAINER_ID=$(docker ps -aq --filter "ancestor=sonarqube:community:9.9.1")
+          if [ -n "$CONTAINER_ID" ]; then
+            docker inspect $CONTAINER_ID
+            docker logs $CONTAINER_ID
+          else
+            echo "No SonarQube container found."
+          fi
 
       - name: Print SonarQube Logs (Debug)
         if: failure()
