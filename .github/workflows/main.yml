@@ -21,7 +21,7 @@ jobs:
       - name: Set up JDK 17.0.9
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'  # Use Eclipse Temurin distribution
+          distribution: 'temurin'
           java-version: '17.0.9'
 
       - name: Verify Java Version
@@ -49,7 +49,9 @@ jobs:
           wget https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
           tar -xvzf apache-maven-3.9.6-bin.tar.gz
           sudo mv apache-maven-3.9.6 /opt/maven
-          sudo ln -s /opt/maven/bin/mvn /usr/bin/mvn
+
+      - name: Update PATH to Use Maven 3.9.6
+        run: echo "export PATH=/opt/maven/bin:\$PATH" >> $GITHUB_ENV
 
       - name: Verify Maven Installation
         run: mvn -v
@@ -96,13 +98,6 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17.0.9'
-
-      - name: Install Maven 3.9.6
-        run: |
-          wget https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
-          tar -xvzf apache-maven-3.9.6-bin.tar.gz
-          sudo mv apache-maven-3.9.6 /opt/maven
-          sudo ln -s /opt/maven/bin/mvn /usr/bin/mvn
 
       - name: Verify Directory Contents
         run: |
