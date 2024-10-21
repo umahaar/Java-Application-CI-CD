@@ -28,8 +28,8 @@ jobs:
         run: |
           pwd
           ls -al
-          ls -al ./HelloWorldApp
-          find ./HelloWorldApp -name "pom.xml"
+          ls -al ./repo
+          find ./repo -name "pom.xml"
 
   install-maven:
     name: Install Maven
@@ -64,14 +64,8 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
 
-      - name: Verify Directory Contents
-        run: |
-          pwd
-          ls -al ./HelloWorldApp
-          find ./HelloWorldApp -name "pom.xml"
-
       - name: SonarCloud Scan
-        working-directory: ./HelloWorldApp
+        working-directory: ./repo/HelloWorldApp  # Set to the correct directory with pom.xml
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
@@ -97,17 +91,6 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
 
-      - name: Install Maven
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y maven
-
-      - name: Verify Directory Contents
-        run: |
-          pwd
-          ls -al ./HelloWorldApp
-          find ./HelloWorldApp -name "pom.xml"
-
       - name: Build with Maven
-        working-directory: ./HelloWorldApp
+        working-directory: ./repo/HelloWorldApp  # Set to the correct directory with pom.xml
         run: mvn clean install
