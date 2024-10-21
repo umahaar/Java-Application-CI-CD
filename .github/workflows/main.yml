@@ -41,16 +41,19 @@ jobs:
     name: SonarQube Analysis
     runs-on: ubuntu-latest
     needs: install-maven
+    timeout-minutes: 15
     services:
       sonarqube:
-        image: sonarqube:latest
+        image: sonarqube:community:9.9.1
         ports:
           - 9000:9000
         options: >-
           --health-cmd="curl -s http://localhost:9000/api/system/health | grep -q UP"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=5
+          --health-retries=30
+          --cpus=2
+          --memory=2g
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -67,7 +70,11 @@ jobs:
           sudo apt-get install -y maven
 
       - name: Wait for SonarQube to be ready
-        run: sleep 30
+        run: sleep 60
+
+      - name: SonarQube Container Logs (Debug)
+        if: failure()
+        run: docker logs $(docker ps -q --filter "ancestor=sonarqube:community:9.9.1")
 
       - name: SonarQube Scan
         env:
