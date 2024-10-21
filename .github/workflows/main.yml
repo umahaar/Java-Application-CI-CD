@@ -51,7 +51,7 @@ jobs:
           --health-cmd="curl -s http://localhost:9000/api/system/health | grep -q UP"
           --health-interval=10s
           --health-timeout=5s
-          --health-retries=30
+          --health-retries=50
           --cpus=2
           --memory=2g
     steps:
@@ -72,9 +72,13 @@ jobs:
       - name: Wait for SonarQube to be ready
         run: sleep 60
 
+      - name: List Running Containers (Debug)
+        if: failure()
+        run: docker ps -a
+
       - name: SonarQube Container Logs (Debug)
         if: failure()
-        run: docker logs $(docker ps -q --filter "ancestor=sonarqube:community:9.9.1")
+        run: docker logs $(docker ps -q --filter "ancestor=sonarqube:community:9.9.1" || true)
 
       - name: SonarQube Scan
         env:
