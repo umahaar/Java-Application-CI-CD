@@ -21,7 +21,9 @@ jobs:
           --health-cmd="curl -s http://localhost:9000/api/system/health | grep -q UP"
           --health-interval=30s
           --health-timeout=10s
-          --health-retries=10
+          --health-retries=20
+          --cpus=2
+          --memory=4g
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
@@ -42,7 +44,11 @@ jobs:
           echo "export PATH=/opt/maven/bin:\$PATH" >> $GITHUB_ENV
 
       - name: Wait for SonarQube to be ready
-        run: sleep 60
+        run: sleep 90
+
+      - name: Debug - SonarQube Logs
+        if: failure()
+        run: docker logs $(docker ps -q --filter "ancestor=sonarqube:9.9.1-community")
 
       - name: SonarQube Scan
         working-directory: ./repo/HelloWorldApp
