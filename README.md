@@ -12,7 +12,7 @@ A simple Java web application that responds with "Hello, World!" when accessed. 
 - Maven 3.9.6 or later
 - Docker
 - Kubernetes (Tested on OCI Kubernetes Engine - OKE)
-- Domain (Enter your domain name in deployment file without domain name ingress won't work)
+- Domain (Enter your domain name in **deployment file** without domain name ingress won't work) OR use **nodeport file** 
 
 ## Build and Run Locally
 
@@ -53,8 +53,14 @@ http://localhost:8080
 ## Deploy on Kubernetes
 
 ### 1. Apply Kubernetes Manifests
+Use Deployment File if you have Domain and enter that domain into Deployment File 
 ```bash
 kubectl apply -f deployment.yaml
+```
+
+Use Nodeport File if you don't have Domain (you can access your Java application via http://<_Node-IP_>:_30000_-_32767_ )
+```bash
+kubectl apply -f nodeport.yaml
 ```
 
 ### 3. Access the Application via Ingress
@@ -67,13 +73,6 @@ http://domain.com/java
 To remove the deployment from Kubernetes:
 ```bash
 kubectl delete deployment helloworldapp
-kubectl delete service helloworldapp-service
-kubectl delete ingress helloworldapp-ingress
 ```
 
-## License
-This project is licensed under the MIT License.
-
 ---
-
-This README provides all the necessary steps for someone to understand, build, run, and deploy the application, ensuring a smooth experience. Adjust any placeholders like `<repository-url>` and `<your-registry>` as needed. Let me know if you want any changes!
