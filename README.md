@@ -18,7 +18,7 @@ A simple Java web application that responds with "Hello, World!" when accessed. 
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository-url>
+git clone https://github.com/Umair7865/Java-Application-CI-CD.git
 cd HelloWorldApp
 ```
 
