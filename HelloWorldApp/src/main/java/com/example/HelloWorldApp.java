@@ -12,6 +12,8 @@ public class HelloWorldApp {
         });
         server.start();
         System.out.println("Server is listening on port 8080...");
+
+        // Keep the application running indefinitely
+        Thread.currentThread().join();
     }
 }
-
