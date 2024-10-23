@@ -12,6 +12,7 @@ A simple Java web application that responds with "Hello, World!" when accessed. 
 - Maven 3.9.6 or later
 - Docker
 - Kubernetes (Tested on OCI Kubernetes Engine - OKE)
+- Domain (Enter your domain name in deployment file without domain name ingress won't work)
 
 ## Build and Run Locally
 
