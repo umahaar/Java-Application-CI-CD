@@ -53,20 +53,24 @@ http://localhost:8080
 ## Deploy on Kubernetes
 
 ### 1. Apply Kubernetes Manifests
-Use Deployment File if you have Domain and enter that domain into Deployment File 
+Use Deployment File if you have Domain and ENTER that domain into Deployment File 
 ```bash
 kubectl apply -f deployment.yaml
 ```
 
-Use Nodeport File if you don't have Domain, you can access your Java application via http://<_Node-IP_>:_30000_-_32767_ 
+Use Nodeport File if you don't have Domain.
 ```bash
 kubectl apply -f nodeport.yaml
 ```
 
 ### 3. Access the Application via Ingress
-Make sure your domain is set up correctly. Access your application at:
+Make sure your domain is set up correctly. If you deploy you application using Deployment File, Access your application at:
 ```
 http://domain.com/java
+```
+If you deploy you application using Nodeport, Access your application at:
+```
+http://<_Node-IP_>:_30000_-_32767_ 
 ```
 
 ## Cleaning Up
