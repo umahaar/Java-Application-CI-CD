@@ -58,7 +58,7 @@ Use Deployment File if you have Domain and enter that domain into Deployment Fil
 kubectl apply -f deployment.yaml
 ```
 
-Use Nodeport File if you don't have Domain (you can access your Java application via http://<_Node-IP_>:_30000_-_32767_ )
+Use Nodeport File if you don't have Domain, you can access your Java application via http://<_Node-IP_>:_30000_-_32767_ 
 ```bash
 kubectl apply -f nodeport.yaml
 ```
