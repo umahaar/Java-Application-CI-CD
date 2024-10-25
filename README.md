@@ -2,6 +2,28 @@
 
 A simple Java web application that responds with "Hello, World!" when accessed. This application is built using Maven and can be deployed on Kubernetes.
 
+```
+.github/
+└── workflows
+    └── main.yml
+HelloWorldApp/
+├── src
+│   ├── main
+│   │   ├── java/com/example
+│   │   │   └── HelloWorldApp.java
+│   │   └── resources
+│   │       └── application.properties
+│   └── test
+│       └── java/com/example
+│           └── AppTest.java
+├── Dockerfile
+├── deployment.yaml
+├── nodeport.yaml
+├── pom.xml
+└── README.md
+``` 
+
+
 ## Features
 - Simple HTTP server that responds with "Hello, World!"
 - Dockerized for easy deployment
