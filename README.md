@@ -13,6 +13,8 @@ HelloWorldApp/
 │   │   │   └── HelloWorldApp.java
 │   │   └── resources
 │   │       └── application.properties
+│   │       └── static
+│   │           └── umair.png
 │   └── test
 │       └── java/com/example
 │           └── AppTest.java
