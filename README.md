@@ -54,7 +54,7 @@ mvn install
 java -jar target/HelloWorldApp-1.0-SNAPSHOT.jar
 ```
 ```bash
-java -cp target/HelloWorldApp-1.0-SNAPSHOT.jar com.example.App
+java -cp target/HelloWorldApp-1.0-SNAPSHOT.jar com.example.HelloWorldApp
 ```
 
 ## Dockerize the Application
