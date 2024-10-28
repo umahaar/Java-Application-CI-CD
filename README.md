@@ -98,7 +98,7 @@ http://domain.com/java
 ```
 If you deploy you application using Nodeport, Access your application at:
 ```
-http://<_Node-IP_>:_30000_-_32767_ 
+http://<Node-IP>:<30000-32767> 
 ```
 
 ## Cleaning Up
