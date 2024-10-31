@@ -43,7 +43,7 @@ HelloWorldApp/
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/Umair7865/Java-Application-CI-CD.git
+git clone https://github.com/Umair-Gillani/Java-Application-CI-CD.git
 cd HelloWorldApp
 ```
 
