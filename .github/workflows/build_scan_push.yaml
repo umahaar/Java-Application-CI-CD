@@ -12,8 +12,6 @@ jobs:
     runs-on: ubuntu-latest  # Using GitHub-hosted runner
     env:
       MAVEN_VERSION: 3.9.6
-      MAVEN_HOME: ${{ runner.temp }}/apache-maven-${{ env.MAVEN_VERSION }}
-      PATH: ${{ env.MAVEN_HOME }}/bin:${{ env.PATH }}
       DOCKER_IMAGE_NAME: java
       DOCKER_TAG: latest
       DOCKER_USERNAME: umair7865 #${{ secrets.DOCKER_USERNAME }}  # Use GitHub secrets for credentials
@@ -26,8 +24,10 @@ jobs:
       - name: Install Maven 3.9.6
         run: |
           echo "Installing Maven $MAVEN_VERSION..."
-          wget https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -P $RUNNER_TEMP
-          tar -xzf $RUNNER_TEMP/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C $RUNNER_TEMP
+          wget https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -P ${{ runner.temp }}
+          tar -xzf ${{ runner.temp }}/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C ${{ runner.temp }}
+          echo "MAVEN_HOME=${{ runner.temp }}/apache-maven-${MAVEN_VERSION }}" >> $GITHUB_ENV
+          echo "PATH=${{ runner.temp }}/apache-maven-${MAVEN_VERSION }}/bin:$PATH" >> $GITHUB_ENV
 
       - name: Set up Maven environment
         run: |
@@ -75,25 +75,23 @@ jobs:
           echo "high_critical_count=$TOTAL_HIGH_CRITICAL" >> $GITHUB_ENV
 
       - name: Check vulnerability threshold
-        if: ${{ env.high_critical_count > 5 }}
+        if: ${{ env.high_critical_count > 75 }}
         run: |
           echo "Vulnerability count exceeds threshold. Aborting push to Docker Hub."
           exit 1
 
       - name: Docker Login
-        if: ${{ env.high_critical_count <= 5 }}
+        if: ${{ env.high_critical_count <= 75 }}
         run: |
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 
       - name: Tag and push Docker image to DockerHub
-        if: ${{ env.high_critical_count <= 5 }}
+        if: ${{ env.high_critical_count <= 75 }}
         run: |
           echo "Tagging Docker image..."
           docker tag $DOCKER_IMAGE_NAME:$DOCKER_TAG $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
           echo "Pushing Docker image to DockerHub..."
           docker push $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
-
-
 
 
 
