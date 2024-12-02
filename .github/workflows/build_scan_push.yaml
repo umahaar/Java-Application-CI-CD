@@ -11,14 +11,23 @@ jobs:
   build-scan-and-push:
     runs-on: ubuntu-latest  # Using GitHub-hosted runner
     env:
-      MAVEN_HOME: /opt/maven
-      DOCKER_IMAGE_NAME: seulahauth
+      MAVEN_VERSION: 3.9.6
+      MAVEN_HOME: ${{ runner.temp }}/apache-maven-${{ env.MAVEN_VERSION }}
+      PATH: ${{ env.MAVEN_HOME }}/bin:${{ env.PATH }}
+      DOCKER_IMAGE_NAME: java
       DOCKER_TAG: latest
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-    
+      DOCKER_USERNAME: umair7865 #${{ secrets.DOCKER_USERNAME }}  # Use GitHub secrets for credentials
+      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Install Maven 3.9.6
+        run: |
+          echo "Installing Maven $MAVEN_VERSION..."
+          wget https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -P $RUNNER_TEMP
+          tar -xzf $RUNNER_TEMP/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C $RUNNER_TEMP
 
       - name: Set up Maven environment
         run: |
@@ -28,8 +37,17 @@ jobs:
       - name: Build with Maven
         run: |
           echo "Building the project..."
-          mvn clean
-          mvn install
+          mvn clean install
+
+      - name: Install Trivy
+        run: |
+          echo "Installing Trivy..."
+          sudo apt-get update
+          sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+          wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+          echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+          sudo apt-get update
+          sudo apt-get install -y trivy
 
       - name: Build Docker image
         run: |
@@ -40,7 +58,7 @@ jobs:
         id: trivy_scan
         run: |
           echo "Scanning Docker image with Trivy..."
-          trivy image --exit-code 0 --severity CRITICAL,HIGH --format json --no-progress $DOCKER_IMAGE_NAME > trivy_report.json
+          trivy image --exit-code 0 --severity CRITICAL,HIGH --format json --no-progress $DOCKER_IMAGE_NAME:$DOCKER_TAG > trivy_report.json
 
           HIGH_COUNT=$(grep -o '"Severity": "HIGH"' trivy_report.json | wc -l)
           CRITICAL_COUNT=$(grep -o '"Severity": "CRITICAL"' trivy_report.json | wc -l)
@@ -57,26 +75,23 @@ jobs:
           echo "high_critical_count=$TOTAL_HIGH_CRITICAL" >> $GITHUB_ENV
 
       - name: Check vulnerability threshold
-        if: ${{ env.high_critical_count > 75 }}
+        if: ${{ env.high_critical_count > 5 }}
         run: |
           echo "Vulnerability count exceeds threshold. Aborting push to Docker Hub."
           exit 1
 
+      - name: Docker Login
+        if: ${{ env.high_critical_count <= 5 }}
+        run: |
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+
       - name: Tag and push Docker image to DockerHub
-        if: ${{ env.high_critical_count <= 75 }}
+        if: ${{ env.high_critical_count <= 5 }}
         run: |
           echo "Tagging Docker image..."
           docker tag $DOCKER_IMAGE_NAME:$DOCKER_TAG $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
           echo "Pushing Docker image to DockerHub..."
           docker push $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
-
-
-
-
-
-
-
-
 
 
 
