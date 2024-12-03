@@ -73,12 +73,14 @@ jobs:
       - name: Build Docker image
         run: |
           echo "Building Docker image..."
+          cd HelloWorldApp
           docker build -t $DOCKER_IMAGE_NAME:$DOCKER_TAG .
 
       - name: Scan Docker image with Trivy
         id: trivy_scan
         run: |
           echo "Scanning Docker image with Trivy..."
+          cd HelloWorldApp
           trivy image --exit-code 0 --severity CRITICAL,HIGH --format json --no-progress $DOCKER_IMAGE_NAME:$DOCKER_TAG > trivy_report.json
 
           HIGH_COUNT=$(grep -o '"Severity": "HIGH"' trivy_report.json | wc -l)
@@ -96,23 +98,24 @@ jobs:
           echo "high_critical_count=$TOTAL_HIGH_CRITICAL" >> $GITHUB_ENV
 
       - name: Check vulnerability threshold
-        if: ${{ env.high_critical_count > 75 }}
+        if: ${{ env.high_critical_count > 5 }}
         run: |
           echo "Vulnerability count exceeds threshold. Aborting push to Docker Hub."
           exit 1
 
       - name: Docker Login
-        if: ${{ env.high_critical_count <= 75 }}
+        if: ${{ env.high_critical_count <= 5 }}
         run: |
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 
       - name: Tag and push Docker image to DockerHub
-        if: ${{ env.high_critical_count <= 75 }}
+        if: ${{ env.high_critical_count <= 5 }}
         run: |
           echo "Tagging Docker image..."
           docker tag $DOCKER_IMAGE_NAME:$DOCKER_TAG $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
           echo "Pushing Docker image to DockerHub..."
           docker push $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
+
 
 
 
