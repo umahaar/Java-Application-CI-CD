@@ -56,9 +56,7 @@ jobs:
       - name: Build with Maven
         run: |
           echo "Building the project..."
-          ls
-          pwd
-          ll
+          cd HelloWorldApp
           mvn clean
           mvn install
 
