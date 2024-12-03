@@ -162,9 +162,6 @@ jobs:
         run: |
           echo "Updating Kubernetes manifest with the new image tag..."
           sed -i 's|image: .*$|image: '"$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG"'|' HelloWorldApp/nodeport.yaml
-          git add .
-          git commit -m "Updated code via Github Actions"
-          git push origin main
 
       - name: Commit and push changes
         if: ${{ env.high_critical_count <= 5 }}
