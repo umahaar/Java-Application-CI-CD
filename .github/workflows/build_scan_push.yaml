@@ -56,7 +56,8 @@ jobs:
       - name: Build with Maven
         run: |
           echo "Building the project..."
-          mvn clean install
+          mvn clean
+          mvn install
 
       - name: Install Trivy
         run: |
