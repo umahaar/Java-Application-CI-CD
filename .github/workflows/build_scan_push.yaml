@@ -23,11 +23,30 @@ jobs:
 
       - name: Install Maven 3.9.6
         run: |
-          echo "Installing Maven $MAVEN_VERSION..."
-          wget https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -P ${{ runner.temp }}
-          tar -xzf ${{ runner.temp }}/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C ${{ runner.temp }}
-          echo "MAVEN_HOME=${{ runner.temp }}/apache-maven-${MAVEN_VERSION }}" >> $GITHUB_ENV
-          echo "PATH=${{ runner.temp }}/apache-maven-${MAVEN_VERSION }}/bin:$PATH" >> $GITHUB_ENV
+          #echo "Installing Maven $MAVEN_VERSION..."
+          #wget https://dlcdn.apache.org/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz -P ${{ runner.temp }}
+          #tar -xzf ${{ runner.temp }}/apache-maven-${MAVEN_VERSION}-bin.tar.gz -C ${{ runner.temp }}
+          #echo "MAVEN_HOME=${{ runner.temp }}/apache-maven-${MAVEN_VERSION }}" >> $GITHUB_ENV
+          #echo "PATH=${{ runner.temp }}/apache-maven-${MAVEN_VERSION }}/bin:$PATH" >> $GITHUB_ENV
+
+
+          # Download Maven
+          echo "Downloading Maven..."
+          wget https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
+          
+          # Extract Maven
+          echo "Extracting Maven..."
+          sudo tar -xzf apache-maven-3.9.6-bin.tar.gz -C /opt/
+          
+          # Rename directory
+          echo "Setting up Maven directory..."
+          sudo mv /opt/apache-maven-3.9.6 /opt/maven
+          
+          # Set up environment variables
+          echo "Configuring environment variables..."
+          echo "MAVEN_HOME=/opt/maven" >> $GITHUB_ENV
+          echo "PATH=/opt/maven/bin:$PATH" >> $GITHUB_ENV
+          
 
       - name: Set up Maven environment
         run: |
