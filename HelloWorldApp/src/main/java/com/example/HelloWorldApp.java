@@ -26,7 +26,7 @@ public class HelloWorldApp {
                     "h2 { color: black; font-size: 24px; font-family: 'Comic Sans MS', cursive, sans-serif; }" +
 		            "button { padding: 10px 20px; font-size: 18px; margin-top: 20px; cursor: pointer; }" +
                     
-                    "button:hover {" +
+                    "h2,button:hover {" +
                     "/* Start the shake animation and make the animation last for 0.5 seconds */" +
                     "animation: shake 0.5s;" +
 
