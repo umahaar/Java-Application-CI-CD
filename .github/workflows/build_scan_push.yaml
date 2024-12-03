@@ -111,31 +111,31 @@ jobs:
           echo "high_critical_count=$TOTAL_HIGH_CRITICAL" >> $GITHUB_ENV
 
 
-      - name: Trivy Action - Github Actions
-        # You may pin to the exact commit or the version.
-        # uses: lazy-actions/gitrivy@6edf95fdc8b1fb841a974536316b209cd16f9000
-        uses: lazy-actions/gitrivy@v3
-        with:
-          # Trivy version
-          image: '$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG' # optional
-          # severities of vulnerabilities (separated by commma)
-          severity: 'HIGH,CRITICAL' # optional, default is HIGH,CRITICAL
-          # target vlunerability [os,library] (separated by commma)
-          # vuln_type: # optional, default is os,library
-          # Ignore unfixed vulnerabilities [true, false]
-          # ignore_unfixed: # optional, default is false
-          # Trivy --template option
-          template: # optional
-          # GitHub access token used to create a issue
-          token: '${{ secrets.MY_TOKENN }}'
-          # Issue title
-          issue_title: 'Security Alert: Vulnerabilities Found in Docker Image' # optional, default is Security Alert
-          # Issue label (separated by commma)
-          issue_label: 'trivy,vulnerability' # optional, default is trivy,vulnerability
-          # Issue assignee (separated by commma)
-          # issue_assignee: # optional
-          # Whether the action should fail if a vulnerability was found
-          # fail_on_vulnerabilities: 'true' # optional, default is false
+      # - name: Trivy Action - Github Actions
+      #   # You may pin to the exact commit or the version.
+      #   # uses: lazy-actions/gitrivy@6edf95fdc8b1fb841a974536316b209cd16f9000
+      #   uses: lazy-actions/gitrivy@v3
+      #   with:
+      #     # Trivy version
+      #     image: '$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG' # optional
+      #     # severities of vulnerabilities (separated by commma)
+      #     severity: 'HIGH,CRITICAL' # optional, default is HIGH,CRITICAL
+      #     # target vlunerability [os,library] (separated by commma)
+      #     # vuln_type: # optional, default is os,library
+      #     # Ignore unfixed vulnerabilities [true, false]
+      #     # ignore_unfixed: # optional, default is false
+      #     # Trivy --template option
+      #     template: # optional
+      #     # GitHub access token used to create a issue
+      #     token: '${{ secrets.MY_TOKENN }}'
+      #     # Issue title
+      #     issue_title: 'Security Alert: Vulnerabilities Found in Docker Image' # optional, default is Security Alert
+      #     # Issue label (separated by commma)
+      #     issue_label: 'trivy,vulnerability' # optional, default is trivy,vulnerability
+      #     # Issue assignee (separated by commma)
+      #     # issue_assignee: # optional
+      #     # Whether the action should fail if a vulnerability was found
+      #     # fail_on_vulnerabilities: 'true' # optional, default is false
 
 
       - name: Check vulnerability threshold
