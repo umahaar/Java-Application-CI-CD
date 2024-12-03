@@ -35,23 +35,23 @@ spec:
       targetPort: 8080  #----------------------------------- The port your container listens on
   type: ClusterIP
 ---
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name:  ingress
-  namespace: default
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  ingressClassName: nginx
-  rules:
-    - host: domain.com  #---------------------------------- Enter Your Domain Here
-      http:
-        paths:
-          - path:  /java
-            pathType: Prefix
-            backend:
-              service:
-                name: helloworldapp-service
-                port:
-                  number: 9090
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name:  ingress
+#   namespace: default
+#   annotations:
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+# spec:
+#   ingressClassName: nginx
+#   rules:
+#     - host: domain.com  #---------------------------------- Enter Your Domain Here
+#       http:
+#         paths:
+#           - path:  /java
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: helloworldapp-service
+#                 port:
+#                   number: 9090
