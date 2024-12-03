@@ -18,7 +18,7 @@ jobs:
       DOCKER_TAG: latest
       DOCKER_USERNAME: umair7865 #${{ secrets.DOCKER_USERNAME }}  # Use GitHub secrets for credentials
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      DOCKER_TAG: ${{ github.sha }}
+      
       
     steps:
       - name: Checkout code
