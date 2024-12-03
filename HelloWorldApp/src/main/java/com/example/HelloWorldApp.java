@@ -50,7 +50,7 @@ public class HelloWorldApp {
                     "</style>" +
                     "</head>" +
                     "<body>" +
-                    "<h1>My Name is 'Syed Umair Ali Gilani'</h1>" +
+                    "<h1>My Name is 'Syed Umair Ali'</h1>" +
 		    "<h2>This is my Java Application</h2>" +
                     "<button onclick=\"window.location.href='/image'\">Click Me</button>" +
                     "</body>" +

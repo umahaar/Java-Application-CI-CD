@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - main  # Change to your target branch
+    paths-ignore:
+      - '**/deployment.yaml'
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -16,6 +18,7 @@ jobs:
       DOCKER_TAG: latest
       DOCKER_USERNAME: umair7865 #${{ secrets.DOCKER_USERNAME }}  # Use GitHub secrets for credentials
       DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      DOCKER_TAG: ${{ github.sha }}
       
     steps:
       - name: Checkout code
@@ -116,6 +119,21 @@ jobs:
           echo "Pushing Docker image to DockerHub..."
           docker push $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
 
+      - name: Update Kubernetes manifest with new image
+        if: success()
+        run: |
+          echo "Updating Kubernetes manifest with the new image tag..."
+          sed -i 's|image: .*$|image: '"$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG"'|' HelloWorldApp/nodeport.yaml
+
+      - name: Commit and push changes
+        if: success()
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'Update image tag to $DOCKER_TAG'
+          file_pattern: HelloWorldApp/nodeport.yaml
+          branch: ${{ github.ref }}
+          commit_user_name: GitHub Actions
+          commit_user_email: actions@github.com
 
 
 
