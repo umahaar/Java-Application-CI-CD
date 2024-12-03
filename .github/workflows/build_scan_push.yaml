@@ -5,7 +5,7 @@ on:
     branches:
       - main  # Change to your target branch
     paths-ignore:
-      - '**/deployment.yaml'
+      - 'HelloWorldApp/nodeport.yaml'
   pull_request:
     types: [opened, synchronize, reopened]
 
@@ -110,43 +110,8 @@ jobs:
 
           echo "high_critical_count=$TOTAL_HIGH_CRITICAL" >> $GITHUB_ENV
 
-      - name: Check vulnerability threshold
-        if: ${{ env.high_critical_count > 5 }}
-        run: |
-          echo "Vulnerability count exceeds threshold. Aborting push to Docker Hub."
-          exit 1
 
-      - name: Docker Login
-        if: ${{ env.high_critical_count <= 5 }}
-        run: |
-          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
-
-      - name: Tag and push Docker image to DockerHub
-        if: ${{ env.high_critical_count <= 5 }}
-        run: |
-          echo "Tagging Docker image..."
-          docker tag $DOCKER_IMAGE_NAME:$DOCKER_TAG $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
-          echo "Pushing Docker image to DockerHub..."
-          docker push $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
-
-      - name: Update Kubernetes manifest with new image
-        if: ${{ env.high_critical_count <= 5 }}
-        run: |
-          echo "Updating Kubernetes manifest with the new image tag..."
-          sed -i 's|image: .*$|image: '"$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG"'|' HelloWorldApp/nodeport.yaml
-
-      - name: Commit and push changes
-        if: ${{ env.high_critical_count <= 5 }}
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: 'Update image tag to $DOCKER_TAG'
-          file_pattern: HelloWorldApp/nodeport.yaml
-          branch: ${{ github.ref }}
-          commit_user_name: GitHub Actions
-          commit_user_email: actions@github.com
-
-
-      - name: Trivy Action
+      - name: Trivy Action - Github Actions
         # You may pin to the exact commit or the version.
         # uses: lazy-actions/gitrivy@6edf95fdc8b1fb841a974536316b209cd16f9000
         uses: lazy-actions/gitrivy@v3
@@ -171,6 +136,48 @@ jobs:
           # issue_assignee: # optional
           # Whether the action should fail if a vulnerability was found
           # fail_on_vulnerabilities: 'true' # optional, default is false
+
+
+      - name: Check vulnerability threshold
+        if: ${{ env.high_critical_count > 5 }}
+        run: |
+          echo "Vulnerability count exceeds threshold. Aborting push to Docker Hub."
+          exit 1
+
+      - name: Docker Login
+        if: ${{ env.high_critical_count <= 5 }}
+        run: |
+          echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
+
+      - name: Tag and push Docker image to DockerHub
+        if: ${{ env.high_critical_count <= 5 }}
+        run: |
+          echo "Tagging Docker image..."
+          docker tag $DOCKER_IMAGE_NAME:$DOCKER_TAG $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
+          echo "Pushing Docker image to DockerHub..."
+          docker push $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
+
+      - name: Update Kubernetes manifest with new image
+        if: ${{ env.high_critical_count <= 5 }}
+        run: |
+          echo "Updating Kubernetes manifest with the new image tag..."
+          sed -i 's|image: .*$|image: '"$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG"'|' HelloWorldApp/nodeport.yaml
+          git add .
+          git commit -m "Updated code via Github Actions"
+          git push origin main
+
+      - name: Commit and push changes
+        if: ${{ env.high_critical_count <= 5 }}
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'Update image tag to $DOCKER_TAG'
+          file_pattern: HelloWorldApp/nodeport.yaml
+          branch: ${{ github.ref }}
+          commit_user_name: GitHub Actions
+          commit_user_email: actions@github.com
+
+
+
 
 
 #################################################################################################################
