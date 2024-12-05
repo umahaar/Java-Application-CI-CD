@@ -24,16 +24,13 @@ jobs:
       
       
     steps:
+      # Step 1: Checkout code
       - name: Checkout code
         uses: actions/checkout@v4
         with:
           persist-credentials: false  # Doesn't save default credentials
 
-      - name: Set up Git config
-        run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-
+      # Step 2: Set up Maven environment
       - name: Install Maven 3.9.6
         run: |
           #echo "Installing Maven $MAVEN_VERSION..."
@@ -60,19 +57,12 @@ jobs:
           echo "MAVEN_HOME=/opt/maven" >> $GITHUB_ENV
           echo "PATH=/opt/maven/bin:$PATH" >> $GITHUB_ENV
           
-
       - name: Set up Maven environment
         run: |
           echo "Setting up Maven environment..."
           mvn -version
-
-      - name: Build with Maven
-        run: |
-          echo "Building the project..."
-          cd HelloWorldApp
-          mvn clean
-          mvn install
-
+      
+      # Step 3: Setup Trivy for Scanning
       - name: Install Trivy
         run: |
           echo "Installing Trivy..."
@@ -83,12 +73,22 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y trivy
 
+      # Step 4: Build with Maven
+      - name: Build with Maven
+        run: |
+          echo "Building the project..."
+          cd HelloWorldApp
+          mvn clean
+          mvn install
+
+      # Step 5 : Build Docker Image
       - name: Build Docker image
         run: |
           echo "Building Docker image..."
           cd HelloWorldApp
           docker build -t $DOCKER_IMAGE_NAME:$DOCKER_TAG .
 
+      # Step 6 : Scan Docker Image
       - name: Scan Docker image with Trivy
         id: trivy_scan
         run: |
@@ -110,17 +110,20 @@ jobs:
 
           echo "high_critical_count=$TOTAL_HIGH_CRITICAL" >> $GITHUB_ENV
 
+      
       - name: Check vulnerability threshold
         if: ${{ env.high_critical_count > 5 }}
         run: |
           echo "Vulnerability count exceeds threshold. Aborting push to Docker Hub."
           exit 1
 
+      # Step 7 : Docker Login
       - name: Docker Login
         if: ${{ env.high_critical_count <= 5 }}
         run: |
           echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin
 
+      # Step 8 : Docker Image Push to Dockerhub
       - name: Tag and push Docker image to DockerHub
         if: ${{ env.high_critical_count <= 5 }}
         run: |
@@ -133,14 +136,6 @@ jobs:
       # - name: Execute Command on Bastion Host
       #   run: |
       #     ssh -o StrictHostKeyChecking=no -i ${{ secrets.BASTION_PRIVATE_KEY }} ${{ secrets.BASTION_USER }}@${{ secrets.BASTION_HOST }} "bash /home/ubuntu/k8s.sh"
-
-      - name: Execute script on Bastion host
-        uses: shinhwagk/remote-bash@0.0.1
-        with:
-          entryPoint: ssh
-          args: |
-            -i ${{ secrets.BASTION_PRIVATE_KEY }} 
-            ${{ secrets.BASTION_USER }}@${{ secrets.BASTION_HOST }} "cd seulah-workspace && kubectl rollout restart deployment umair-dp"
 
 
       # - name: Update Kubernetes manifest with new image
