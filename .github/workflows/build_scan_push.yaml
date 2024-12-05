@@ -138,8 +138,7 @@ jobs:
           key: ${{ secrets.BASTION_PRIVATE_KEY }}  # Replace with your Bastion private SSH key (use GitHub secrets)
           port: 22  # Default SSH port
           script: |
-            cd seulah-workspace
-            kubectl rollout restart deployment umair-dp
+            bash /home/ubuntu/k8s.sh
 
 
       # - name: Update Kubernetes manifest with new image
