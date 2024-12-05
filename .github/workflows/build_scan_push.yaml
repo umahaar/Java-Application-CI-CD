@@ -130,9 +130,19 @@ jobs:
           docker push $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
 
 
-      - name: Execute Command on Bastion Host
-        run: |
-          ssh -o StrictHostKeyChecking=no -i ${{ secrets.BASTION_PRIVATE_KEY }} ${{ secrets.BASTION_USER }}@${{ secrets.BASTION_HOST }} "bash /home/ubuntu/k8s.sh"
+      # - name: Execute Command on Bastion Host
+      #   run: |
+      #     ssh -o StrictHostKeyChecking=no -i ${{ secrets.BASTION_PRIVATE_KEY }} ${{ secrets.BASTION_USER }}@${{ secrets.BASTION_HOST }} "bash /home/ubuntu/k8s.sh"
+
+      - name: Execute script on Bastion host
+        uses: shinhwagk/remote-bash@0.0.1
+        with:
+          host: ${{ secrets.BASTION_HOST }}
+          username: ${{ secrets.BASTION_USER }}
+          key: ${{ secrets.BASTION_PRIVATE_KEY }}
+          script: |
+            cd seulah-workspace
+            kubectl rollout restart deployment umair-dp
 
 
       # - name: Update Kubernetes manifest with new image
