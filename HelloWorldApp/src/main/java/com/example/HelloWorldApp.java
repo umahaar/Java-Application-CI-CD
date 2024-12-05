@@ -52,9 +52,9 @@ public class HelloWorldApp {
                         "<body>" + 
                         "    <h1>My Name is 'Syed Umair Ali Gilani'</h1>" + 
                         "    <div>" + 
-                        "        <a href=\"#\" class=\"fa fa-linkedin\"></a>" + 
-                        "        <a href=\"#\" class=\"fa fa-facebook\"></a>" + 
-                        "        <a href=\"#\" class=\"fa fa-google\"></a>" + 
+                        "        <a href=\"https://www.linkedin.com/in/umairgl/\" class=\"fa fa-linkedin\"></a>" + 
+                        "        <a href=\"https://www.facebook.com/umairgl\" class=\"fa fa-facebook\"></a>" + 
+                        "        <a href=\"https://mail.google.com/mail/?view=cm&fs=1&to=umair123@gmail.com\" class=\"fa fa-google\"></a>" + 
                         "    </div>" + 
                         "    <h2>This is my Java Application</h2>" + 
                         "    <button onclick=\"window.location.href='/image'\">Click Me</button>" + 
