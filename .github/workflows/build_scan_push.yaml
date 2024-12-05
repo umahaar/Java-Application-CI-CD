@@ -157,21 +157,21 @@ jobs:
           echo "Pushing Docker image to DockerHub..."
           docker push $DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG
 
-      - name: Update Kubernetes manifest with new image
-        if: ${{ env.high_critical_count <= 5 }}
-        run: |
-          echo "Updating Kubernetes manifest with the new image tag..."
-          sed -i 's|image: .*$|image: '"$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG"'|' HelloWorldApp/nodeport.yaml
+      # - name: Update Kubernetes manifest with new image
+      #   if: ${{ env.high_critical_count <= 5 }}
+      #   run: |
+      #     echo "Updating Kubernetes manifest with the new image tag..."
+      #     sed -i 's|image: .*$|image: '"$DOCKER_USERNAME/$DOCKER_IMAGE_NAME:$DOCKER_TAG"'|' HelloWorldApp/nodeport.yaml
 
-      - name: Commit and push changes
-        if: ${{ env.high_critical_count <= 5 }}
-        uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: 'Update image tag to $DOCKER_TAG'
-          file_pattern: HelloWorldApp/nodeport.yaml
-          branch: ${{ github.ref }}
-          commit_user_name: GitHub Actions
-          commit_user_email: actions@github.com
+      # - name: Commit and push changes
+      #   if: ${{ env.high_critical_count <= 5 }}
+      #   uses: stefanzweifel/git-auto-commit-action@v4
+      #   with:
+      #     commit_message: 'Update image tag to $DOCKER_TAG'
+      #     file_pattern: HelloWorldApp/nodeport.yaml
+      #     branch: ${{ github.ref }}
+      #     commit_user_name: GitHub Actions
+      #     commit_user_email: actions@github.com
 
 
 
