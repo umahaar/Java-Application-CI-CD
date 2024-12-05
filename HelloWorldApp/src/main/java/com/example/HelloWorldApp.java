@@ -56,7 +56,7 @@ public class HelloWorldApp {
                         "        <a href=\"https://www.facebook.com/umairgl\" class=\"fa fa-facebook\"></a>" + 
                         "        <a href=\"https://mail.google.com/mail/?view=cm&fs=1&to=umair123@gmail.com\" class=\"fa fa-google\"></a>" + 
                         "    </div>" + 
-                        "    <p>Reach Me from one of any above Platform</p>"
+                        "    <p>Reach Me from one of any above Platform</p>" +
                         "    <h2>This is my Java Application</h2>" + 
                         "    <button onclick=\"window.location.href='/image'\">Click Me</button>" + 
                         "</body>" + 
