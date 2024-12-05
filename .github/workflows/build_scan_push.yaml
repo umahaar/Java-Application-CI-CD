@@ -137,12 +137,10 @@ jobs:
       - name: Execute script on Bastion host
         uses: shinhwagk/remote-bash@0.0.1
         with:
-          host: ${{ secrets.BASTION_HOST }}
-          username: ${{ secrets.BASTION_USER }}
-          key: ${{ secrets.BASTION_PRIVATE_KEY }}
-          script: |
-            cd seulah-workspace
-            kubectl rollout restart deployment umair-dp
+          entryPoint: ssh
+          args: |
+            -i ${{ secrets.BASTION_PRIVATE_KEY }} 
+            ${{ secrets.BASTION_USER }}@${{ secrets.BASTION_HOST }} "cd seulah-workspace && kubectl rollout restart deployment umair-dp"
 
 
       # - name: Update Kubernetes manifest with new image
