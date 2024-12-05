@@ -24,15 +24,15 @@ public class HelloWorldApp {
                         "    <link rel=\"stylesheet\" href=\"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css\">" + 
                         "    <title>Syed Umair Ali Gilani</title>" + 
                         "    <style>" + 
-                        "        .fa { padding: 20px; font-size: 30px; width: 50px; text-align: center; text-decoration: none; margin: 5px 10px; display: inline-block; }" + 
+                        "        .fa {padding: 20px; font-size: 30px; width: 30px; text-align: center; text-decoration: none; border-radius: 50%;}" + 
                         "        .fa:hover { opacity: 0.7; }" + 
                         "        .fa-linkedin { background: #007bb5; color: white; }" + 
                         "        .fa-google { background: #dd4b39; color: white; }" + 
                         "        .fa-facebook { background: #3B5998; color: white; }" + 
-                        "        body { background-color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; }" + 
+                        "        body { background: linear-gradient(to right, #84cdf0, #6996f5, #d48e8e); display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; font-family: Arial, sans-serif; }" + 
                         "        h1 { color: black; font-size: 48px; font-family: 'Comic Sans MS', cursive, sans-serif; }" + 
                         "        h2 { color: black; font-size: 24px; font-family: 'Comic Sans MS', cursive, sans-serif; }" + 
-                        "        button { padding: 10px 20px; font-size: 18px; margin-top: 20px; cursor: pointer; }" + 
+                        "        button { padding: 20px 30px; font-size: 20px; cursor: pointer; border: none; background-color: #4CAF50; color: white; border-radius: 5px; }" + 
                         "        button:hover { animation: shake 0.5s; animation-iteration-count: infinite; }" + 
                         "        @keyframes shake { " + 
                         "            0% { transform: translate(1px, 1px) rotate(0deg); }" + 
