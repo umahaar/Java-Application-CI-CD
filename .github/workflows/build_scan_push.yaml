@@ -131,14 +131,8 @@ jobs:
 
 
       - name: Execute Command on Bastion Host
-        uses: appleboy/ssh-action@v0.1.7
-        with:
-          host: ${{ secrets.BASTION_HOST }}  # Replace with your Bastion host IP/hostname
-          username: ${{ secrets.BASTION_USER }}  # Replace with your Bastion SSH username
-          key: ${{ secrets.BASTION_PRIVATE_KEY }}  # Replace with your Bastion private SSH key (use GitHub secrets)
-          port: 22  # Default SSH port
-          script: |
-            bash /home/ubuntu/k8s.sh
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.BASTION_PRIVATE_KEY }} ${{ secrets.BASTION_USER }}@${{ secrets.BASTION_HOST }} "bash /home/ubuntu/k8s.sh"
 
 
       # - name: Update Kubernetes manifest with new image
