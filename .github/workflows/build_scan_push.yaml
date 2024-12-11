@@ -1,9 +1,9 @@
-name: Build, Scan, and Deploy Docker Image
+name: DB - Build, Scan, and Deploy Docker Image
 
 on:
   push:
     branches:
-      - main  # Change to your target branch
+      - database  # Change to your target branch
     paths-ignore:
       - 'HelloWorldApp/nodeport.yaml'
   pull_request:
