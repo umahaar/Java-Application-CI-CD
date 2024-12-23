@@ -27,7 +27,7 @@ jobs:
         wget https://dlcdn.apache.org/maven/maven-3/3.9.6/binaries/apache-maven-3.9.6-bin.tar.gz
         tar -xvzf apache-maven-3.9.6-bin.tar.gz
         sudo mv apache-maven-3.9.6 /opt/maven
-        sudo ln -s /opt/maven/bin/mvn /usr/bin/mvn
+        sudo ln -sf /opt/maven/bin/mvn /usr/bin/mvn
 
     # Step 4: Verify Maven Version
     - name: Check Maven Version
