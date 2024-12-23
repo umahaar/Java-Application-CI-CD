@@ -1,6 +1,17 @@
-FROM eclipse-temurin:17-jre
+# Use a base image with Java
+FROM openjdk:17-jdk-slim
+
+# Set the working directory inside the container
 WORKDIR /app
-COPY target/HelloWorldApp-1.0-SNAPSHOT.jar /app/HelloWorldApp.jar
-COPY src/main/resources/static/umair.png  src/main/resources/static/umair.png 
+
+# Copy the JAR file to the container
+COPY target/HelloWorldApp-1.0-SNAPSHOT.jar /app/app.jar
+
+#Copy the static asset to the cotainer
+COPY src/main/resources/static/umair.png  src/main/resources/static/umair.png
+
+# Expose the port your app listens on
 EXPOSE 8080
-ENTRYPOINT ["java", "-cp", "/app/HelloWorldApp.jar", "com.example.HelloWorldApp"]
+
+# Define the command to run the application
+CMD ["java", "-jar", "/app/app.jar"]
