@@ -50,7 +50,7 @@ public class HelloWorldApp {
                         "    </style>" + 
                         "</head>" + 
                         "<body>" + 
-                        "    <h1>My Name is 'Syed Umair Ali Gilani'</h1>" + 
+                        "    <h1>My Name is 'Syed Umair Ali Gilani.'</h1>" + 
                         "    <div>" + 
                         "        <a href=\"https://www.linkedin.com/in/umairgl/\" class=\"fa fa-linkedin\"></a>" + 
                         "        <a href=\"https://www.facebook.com/umairgl\" class=\"fa fa-facebook\"></a>" + 
