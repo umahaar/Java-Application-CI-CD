@@ -57,3 +57,26 @@ jobs:
     # Step 8: Push Docker image
     - name: Push Docker Image
       run: docker push mahaar57/hello-world-app:${{ github.sha }}
+    
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: SSH into the remote server
+    - name: Deploy to Remote Server
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.REMOTE_HOST }}
+        username: ${{ secrets.REMOTE_USER }}
+        key: ${{ secrets.REMOTE_PRIVATE_KEY }}
+        script: |
+          # Pull the Docker image
+          docker pull mahaar57/hello-world-app:${{ github.sha }}
+
+          # Stop any existing container
+          docker stop hello-world-app || true
+          docker rm hello-world-app || true
+
+          # Run the new container
+          docker run -d -p 8080:8080 --name hello-world-app mahaar57/hello-world-app:${{ github.sha }}
