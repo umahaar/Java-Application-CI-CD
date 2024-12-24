@@ -42,10 +42,13 @@ jobs:
       run: |
         cd HelloWorldApp
         mvn clean install
+        
 
     # Step 6: Build Docker image
     - name: Build Docker Image
-      run: docker build -t mahaar57/hello-world-app:${{ github.sha }} .
+      run: |
+        cd HelloWorldApp 
+        docker build -t mahaar57/hello-world-app:${{ github.sha }} .
 
     # Step 7: Log in to Docker Hub
     - name: Log in to Docker Hub
