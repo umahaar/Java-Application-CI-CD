@@ -48,7 +48,7 @@ jobs:
     - name: Build Docker Image
       run: |
         cd HelloWorldApp 
-        docker build -t mahaar57/hello-world-app:${{ github.sha }} .
+        docker build --platform linux/arm64 -t mahaar57/hello-world-app:${{ github.sha }}
 
     # Step 7: Log in to Docker Hub
     - name: Log in to Docker Hub
