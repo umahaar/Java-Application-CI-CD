@@ -14,4 +14,4 @@ COPY src/main/resources/static/umair.png  src/main/resources/static/umair.png
 EXPOSE 8080
 
 # Define the command to run the application
-CMD ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
